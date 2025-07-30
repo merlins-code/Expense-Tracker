@@ -52,6 +52,29 @@
             </form>
         </div>
 
+<!-- Add Paycheck Form -->
+<div class="form-section">
+    <h2>Add Paycheck</h2>
+    <form id="paycheck-form">
+        <div class="form-group">
+            <label for="paycheck-amount">Amount:</label>
+            <input type="number" id="paycheck-amount" name="amount" step="0.01" min="0.01" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="paycheck-date">Date:</label>
+            <input type="date" id="paycheck-date" name="date" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="paycheck-description">Description (optional):</label>
+            <input type="text" id="paycheck-description" name="description" placeholder="e.g., Bi-weekly salary, Bonus, etc.">
+        </div>
+        
+        <button type="submit">Add Paycheck</button>
+    </form>
+</div>
+
 <!-- View Expenses Section -->
 <div class="view-section">
     <h2>Your Expenses</h2>
@@ -79,16 +102,50 @@
         <button id="load-expenses-btn" type="button">Load Expenses</button>
     </div>
     
-    <!-- Total Display -->
-    <div id="total-display" class="total-display" style="display: none;">
-        <h3>Total: <span id="total-amount">$0.00</span></h3>
-        <p id="expense-count">0 expenses</p>
+<!-- Financial Summary Display -->
+<div id="financial-summary" class="financial-summary" style="display: none;">
+    <div class="summary-row">
+        <div class="summary-item income">
+            <h4>Total Income</h4>
+            <span id="total-income">$0.00</span>
+        </div>
+        <div class="summary-item expenses">
+            <h4>Total Expenses</h4>
+            <span id="total-expenses">$0.00</span>
+        </div>
+        <div class="summary-item balance">
+            <h4>Remaining Balance</h4>
+            <span id="remaining-balance">$0.00</span>
+        </div>
     </div>
+    <p id="expense-count">0 expenses</p>
+</div>
 
-    <div id="expenses-container">
-        <div id="expenses-list"></div>
+<!-- ADD THIS NEW PAYCHECK VIEWING SECTION: -->
+<div class="paycheck-view-section">
+    <h3>Paycheck Management</h3>
+    <div class="paycheck-controls">
+        <button id="toggle-paychecks-btn" type="button">Show Paychecks</button>
+        <button id="load-paychecks-btn" type="button" style="display: none;">Refresh Paychecks</button>
+    </div>
+    
+    <div id="paychecks-container" style="display: none;">
+        <div id="paychecks-list"></div>
     </div>
 </div>
+
+<!-- Existing expenses container -->
+<div id="expenses-container">
+    <div id="expenses-list"></div>
+</div>
+
+<!-- ADD THIS MISSING SECTION: -->
+<div id="expenses-container">
+    <div id="expenses-list"></div>
+</div>
+
+<!-- Messages -->
+<div id="message" class="message"></div>
         
         <!-- Messages -->
         <div id="message" class="message"></div>
