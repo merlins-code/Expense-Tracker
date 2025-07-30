@@ -10,9 +10,6 @@ filename = r"d:\Python\Python_Projects\Expense_Tracker\Main.sql"
 def read_sql_file(filename):
     with open(filename, "r") as file:
         return file.read()
-   
-      
-        
 
 def create_database():
     # Connect to Expense_data.db
@@ -28,7 +25,7 @@ def create_database():
 @app.route('/api/expenses', methods=['POST'])
 def add_expense():
     try:
-    # Get data from the request
+        # Get data from the request
         data = request.get_json()
         
         # Validation 1: Check that all required fields are provided
@@ -71,8 +68,7 @@ def add_expense():
         return jsonify({"error": "Invalid price format. Must be a number."}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-    
-    
+
 @app.route('/api/expenses', methods=['GET'])
 def get_expenses():
     try:
@@ -80,12 +76,24 @@ def get_expenses():
         conn = sqlite3.connect("Expense_data.db")
         cursor = conn.cursor()
         
-        # Get all expenses sorted by date (newest first)
-        cursor.execute("""
-            SELECT id, item, price, date, location, category 
-            FROM Expenses 
-            ORDER BY date DESC
-        """)
+        # Check if month filter is provided
+        month_filter = request.args.get('month')
+        
+        if month_filter:
+            # Filter by month (YYYY-MM format)
+            cursor.execute("""
+                SELECT id, item, price, date, location, category 
+                FROM Expenses 
+                WHERE date LIKE ?
+                ORDER BY date DESC
+            """, (f"{month_filter}%",))
+        else:
+            # Get all expenses sorted by date (newest first)
+            cursor.execute("""
+                SELECT id, item, price, date, location, category 
+                FROM Expenses 
+                ORDER BY date DESC
+            """)
         
         # Fetch all results
         expenses = cursor.fetchall()
@@ -110,11 +118,34 @@ def get_expenses():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+@app.route('/api/expenses/<int:expense_id>', methods=['DELETE'])
+def delete_expense(expense_id):
+    try:
+        # Connect to database
+        conn = sqlite3.connect("Expense_data.db")
+        cursor = conn.cursor()
+        
+        # Check if expense exists
+        cursor.execute("SELECT id FROM Expenses WHERE id = ?", (expense_id,))
+        expense = cursor.fetchone()
+        
+        if not expense:
+            conn.close()
+            return jsonify({"error": "Expense not found"}), 404
+        
+        # Delete the expense
+        cursor.execute("DELETE FROM Expenses WHERE id = ?", (expense_id,))
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({"message": "Expense deleted successfully!"}), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
 # Test the database creation
 if __name__ == "__main__":
     create_database()
     print("Database and table created successfully!")
-    app.run(debug=True, port=5000)  
-    
-    
-    
+    app.run(debug=True, port=5000)
