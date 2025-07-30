@@ -51,6 +51,44 @@
                 <button type="submit">Add Expense</button>
             </form>
         </div>
+
+<!-- View Expenses Section -->
+<div class="view-section">
+    <h2>Your Expenses</h2>
+    
+    <!-- Month Filter -->
+    <div class="filter-section">
+        <div class="form-group">
+            <label for="month-filter">Filter by Month:</label>
+            <select id="month-filter" name="month-filter">
+                <option value="">All Months</option>
+                <option value="2025-07">July 2025</option>
+                <option value="2025-08">Auguest 2025</option>
+                <option value="2025-09">September 2025</option>
+                <option value="2025-10">October 2025</option>
+                <option value="2025-11">November 2025</option>
+                <option value="2025-12">December 2025</option>
+                <option value="2026-01">January 2026</option>
+                <option value="2026-02">February 2026</option>
+                <option value="2026-03">March 2026</option>
+                <option value="2026-04">April 2026</option>
+                <option value="2026-05">May 2026</option>
+                <option value="2026-06">June 2026</option>
+            </select>
+        </div>
+        <button id="load-expenses-btn" type="button">Load Expenses</button>
+    </div>
+    
+    <!-- Total Display -->
+    <div id="total-display" class="total-display" style="display: none;">
+        <h3>Total: <span id="total-amount">$0.00</span></h3>
+        <p id="expense-count">0 expenses</p>
+    </div>
+
+    <div id="expenses-container">
+        <div id="expenses-list"></div>
+    </div>
+</div>
         
         <!-- Messages -->
         <div id="message" class="message"></div>
